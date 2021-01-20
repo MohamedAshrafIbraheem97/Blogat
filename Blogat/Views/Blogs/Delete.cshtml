@@ -1,0 +1,74 @@
+﻿@model Blogat.Models.Blog
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-actions no-color">
+        <input type="submit" value="Yes" class="btn btn-danger" /> |
+        @Html.ActionLink("No", "Index", null,new { @class = "btn btn-success" })
+    </div>
+}
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Category.CategoryName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Category.CategoryName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PersonBloged.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PersonBloged.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Heading)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Heading)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Body)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Body)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TimeBloged)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TimeBloged)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BlogLikes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BlogLikes)
+        </dd>
+
+    </dl>
+
+
+</div>

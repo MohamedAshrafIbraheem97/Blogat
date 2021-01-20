@@ -1,0 +1,123 @@
+﻿@model Blogat.ViewModels.BlogsViewModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<hr />
+
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3>
+            @Html.DisplayFor(modelItem => Model.Blog.Heading)
+
+        </h3>
+
+        <p>
+            Posted On: @Html.DisplayFor(model => model.Blog.TimeBloged)
+        </p>
+
+    </div>
+    <div class="panel-body">
+        <p>
+            By: @Html.DisplayFor(model => model.Blog.PersonBloged.FirstName)
+            @Html.DisplayFor(model => model.Blog.PersonBloged.LastName)
+        </p>
+        <p>
+            It's From @Html.DisplayFor(model => model.Category.CategoryName) Caregory
+        </p>
+        <hr />
+        <p>
+            @Html.DisplayFor(modelItem => Model.Blog.Body)
+
+        </p>
+        <hr />
+        <p>
+
+            @foreach (var comment in Model.Comments)
+            {
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        @comment.Body
+                        @using (Html.BeginForm("Like", "Comments", new { commentId = comment.Id }, FormMethod.Post, new { style = "float: right;" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-success">Like <span class="badge">@comment.CommentLikes</span></button>
+
+                        }
+                        @using (Html.BeginForm("Delete", "Comments", new { commentId = comment.Id }, FormMethod.Post, new { style = "float: right;" }))
+                        {
+                            if (Model.Blog.PersonBloged.Id == comment.PersonCommented.Id)
+                            {
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-danger">Delete </button>
+                            }
+                        }
+                    </div>
+                </div>
+
+            }
+
+
+            </p>
+            <hr />
+            <div class="btn-group">
+
+                @using (Html.BeginForm("Like", "Blogs", new { id = Model.Blog.Id }))
+                {
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-success">Like <span class="badge">@Model.Blog.BlogLikes</span></button>
+
+                }
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
+                    Comment
+                </button>
+            </div>
+
+        </div>
+
+</div>
+
+<div class="collapse" id="collapseExample">
+    <div class="card card-body">
+        @using (Html.BeginForm("Create", "Comments", new { blogId = Model.Blog.Id }))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(c => c.Comment.Id)
+            @Html.HiddenFor(c => c.Comment.TimeCommented)
+            @Html.HiddenFor(c => c.Comment.CommentLikes)
+            @Html.HiddenFor(c => c.Comment.PersonCommented)
+            @Html.HiddenFor(c => c.Comment.PersonId)
+            @Html.HiddenFor(c => c.Comment.BlogId)
+            @Html.HiddenFor(c => c.Comment.Blog)
+
+            <div class="form-horizontal">
+
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Comment.Body, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Blog.Body, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-0 col-md-10">
+                        <input type="submit" value="Comment" class="btn btn-success" />
+                        @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-default" })
+
+                    </div>
+                </div>
+
+            </div>
+        }
+
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Blog.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
